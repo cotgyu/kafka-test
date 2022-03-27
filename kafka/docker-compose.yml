@@ -1,0 +1,48 @@
+version: '3.8' 
+volumes: 
+  peter-kafka001-volume: 
+    name: peter-kafka001-volume
+  peter-kafka002-volume: 
+    name: peter-kafka002-volume
+  peter-kafka003-volume: 
+    name: peter-kafka003-volume
+  
+networks: 
+  default: 
+    external: 
+      name: 
+        zoo
+    
+services: 
+  peter-kafka001: 
+    container_name: peter-kafka001
+    environment: 
+      BROKER_ID: 1
+    hostname: peter-kafka001
+    image: test-kafka
+    restart: always
+    volumes: 
+      - peter-kafka001-volume:/data
+  
+  peter-kafka002:
+    container_name: peter-kafka002
+    environment: 
+      BROKER_ID: 2
+    hostname: peter-kafka002
+    image: test-kafka
+    restart: always
+    volumes:
+      - peter-kafka002-volume:/data
+      
+  peter-kafka003: 
+    container_name: peter-kafka003
+    environment: 
+      BROKER_ID: 3 
+    hostname: peter-kafka003
+    image: test-kafka
+    restart: always
+    volumes: 
+      - peter-kafka003-volume:/data
+    
+  
+
