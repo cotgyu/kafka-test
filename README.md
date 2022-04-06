@@ -24,7 +24,28 @@ docker-compose up -d
 docker logs peter-kafka001
 ~~~
 
+~~~
+## 토픽생성
+/usr/local/kafka/bin/kafka-topics.sh \
+--zookeeper perter-zk001:2181,peter-zk002:2181,peter-zk003:2181/peter-kafka \
+--replication-factor 1 --partitions 1 --topic peter-topic --create
 
+## 토픽삭재
+/usr/local/kafka/bin/kafka-topics.sh \
+--zookeeper perter-zk001:2181,peter-zk002:2181,peter-zk003:2181/peter-kafka \
+--topic peter-topic --delete
+
+
+## 메시지를 퍼블리싱 
+/usr/local/kafka/bin/kafka-console-producer.sh \
+--broker-list peter-kafka001:9092,peter-kafka002:9092,peter-kafka003:9092 \
+--topic peter-topic 
+
+## 메시지 가져오기
+/usr/local/kafka/bin/kafka-console-consumer.sh \
+--bootstrap-server peter-kafka001:9092,peter-kafka002:9092,peter-kafka003:9092 \
+--topic peter-topic --from-beginning
+~~~
 
 
 
