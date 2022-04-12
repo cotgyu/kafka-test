@@ -21,6 +21,8 @@ services:
     hostname: peter-kafka001
     image: test-kafka
     restart: always
+    ports:
+      - "9092:9092"
     volumes: 
       - peter-kafka001-volume:/data
   
@@ -31,6 +33,8 @@ services:
     hostname: peter-kafka002
     image: test-kafka
     restart: always
+    ports:
+      - "9093:9093"
     volumes:
       - peter-kafka002-volume:/data
       
@@ -41,6 +45,8 @@ services:
     hostname: peter-kafka003
     image: test-kafka
     restart: always
+    ports:
+      - "9094:9094"
     volumes: 
       - peter-kafka003-volume:/data
     
