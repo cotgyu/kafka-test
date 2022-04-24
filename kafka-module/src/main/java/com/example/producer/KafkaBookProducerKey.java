@@ -10,7 +10,7 @@ import java.util.Properties;
 public class KafkaBookProducerKey {
     public static void main(String[] args) {
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", "peter-kafka001:9092");
+        properties.put("bootstrap.servers", "kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094");
         properties.put("acks", "1");
         properties.put("compression.type", "gzip");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
