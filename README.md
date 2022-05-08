@@ -87,21 +87,22 @@
     --zookeeper zookeeper-local:2181/peter-kafka \
     --replication-factor 2 --partitions 2 --topic peter-topic2 --create
 
+
     # 토픽2 describe
     /opt/kafka/bin/kafka-topics.sh \
     --zookeeper zookeeper-local:2181/peter-kafka \
     --topic peter-topic2 --describe
 
+
     # 토픽2 메시지 가져오기
     /opt/kafka/bin/kafka-console-consumer.sh \
     --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
     --topic peter-topic2 --from-beginning
-
+    
     # 토픽2 메시지 가져오기 (특정 파티션)
     /opt/kafka/bin/kafka-console-consumer.sh \
     --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
     --topic peter-topic2 --partition 1 --from-beginning
-
 
 
     ## 컨슈머 그룹 리스트 
@@ -109,10 +110,48 @@
     --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
     --list
 
+
     ## 그룹 지정해서 가져오기
     /opt/kafka/bin/kafka-console-consumer.sh \
     --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
     --topic peter-topic --group peter-consumer-group --from-beginning
+  
+  
+    ## 토픽 보관주기 변경
+    /opt/kafka/bin/kafka-configs.sh \
+    --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
+    --alter --entity-type topics --entity-name peter-topic --add-config retention.ms=3600000
+  
+  
+    ## 파티션 늘리기
+    /opt/kafka/bin/kafka-topics.sh \
+    --zookeeper zookeeper-local:2181/peter-kafka \
+    --alter --topic peter-topic --partitions 2
+  
+  
+    ## 리플리케이션 팩터 변경을 위한 rf.json 파일
+    {"version":1,
+    "partitions":[
+      {"topic":"peter-topic","partition":0,"replicas":[1,2]},
+      {"topic":"peter-topic","partition":1,"replicas":[2,3]}
+    ]}
+    
+    ## 리플케이션 팩터 변경
+    /opt/kafka/bin/kafka-reassign-partitions.sh \
+    --zookeeper zookeeper-local:2181/peter-kafka \
+    --reassignment-json-file /opt/kafka/rf.json --execute
+    
+
+    ## 컨슈머 리스트 확인
+    /opt/kafka/bin/kafka-consumer-groups.sh \
+    --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
+    --list
+  
+    ## 컨슈머 상태 확인
+    /opt/kafka/bin/kafka-consumer-groups.sh \
+    --bootstrap-server kafka-local-001:9092,kafka-local-002:9093,kafka-local-003:9094 \
+    --group peter-partition --describe
+  
     ~~~
 
 ### 참고 
